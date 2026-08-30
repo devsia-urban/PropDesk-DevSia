@@ -16,7 +16,7 @@ import {
   Handshake,
   Shield,
   CalendarCheck,
-  Layers,
+  Layers, Briefcase,
 } from "lucide-react"
 import { Sidebar } from "@/components/layout/sidebar"
 import { MobileNav } from "@/components/layout/mobile-nav"
@@ -44,6 +44,7 @@ const allNavItems = [
   { label: "Bookings", icon: CalendarCheck, href: "/bookings" },
   { label: "Smart Matches", icon: Sparkles, href: "/matches" },
   { label: "Brokers", icon: Handshake, href: "/brokers" },
+  { label: "Associates", icon: Briefcase, href: "/associates" },
   { label: "Notifications", icon: Bell, href: "/notifications" },
   { label: "Team", icon: UserCog, href: "/team" },
   { label: "Settings", icon: Settings, href: "/settings" },

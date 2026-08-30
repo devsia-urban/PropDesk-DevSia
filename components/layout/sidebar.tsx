@@ -164,7 +164,8 @@ export function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
               .filter(item => {
                 if (profile?.role === 'agent' && item.label === 'Brokers') return false
                 if (item.label === 'Associates') {
-                  if (profile?.role !== 'admin') return false
+                  const checkRole = profile?.role || cachedRole?.toLowerCase();
+                  if (checkRole !== 'admin') return false
                 }
                 return true
               })
