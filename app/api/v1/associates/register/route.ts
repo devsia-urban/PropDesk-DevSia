@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { notifyAgencyAdmins } from '@/lib/services/notification'
 
 export async function POST(req: Request) {
   const authHeader = req.headers.get('authorization')
@@ -31,6 +32,7 @@ export async function POST(req: Request) {
       preferred_working_location,
       current_occupation,
       works_with_other_company, // "Yes" or "No" or boolean
+      other_company_name,
       deals_closed_last_year
     } = body
 
@@ -68,6 +70,7 @@ export async function POST(req: Request) {
         preferred_working_location: preferred_working_location || null,
         current_occupation: current_occupation || null,
         works_with_other_company: works_with,
+        other_company_name: works_with ? (other_company_name || null) : null,
         deals_closed_last_year: deals_closed_last_year || null,
         status: 'pending'
       })
@@ -84,17 +87,23 @@ export async function POST(req: Request) {
       .eq('role', 'admin')
 
     if (admins && admins.length > 0) {
-      const notifications = admins.map(admin => ({
-        agency_id,
-        user_id: admin.id,
+      await notifyAgencyAdmins(agency_id, {
         type: 'system',
         title: 'New Associate Application',
         message: `${full_name} applied to be an associate from your website.`,
-        reference_id: application.id,
-        reference_type: 'associate_application',
-        is_read: false
-      }))
-      await supabaseAdmin.from('notifications').insert(notifications)
+        referenceId: application.id,
+        referenceType: 'associate_application'
+      })
+
+      // Log Activity to Dashboard Feed
+      await supabaseAdmin.from('activities').insert({
+        agency_id,
+        user_id: admins[0].id,
+        action: 'create',
+        entity_type: 'broker',
+        entity_id: application.id,
+        details: { title: full_name }
+      })
     }
 
     return NextResponse.json({ success: true, application_id: application.id })
