@@ -508,8 +508,8 @@ export default function AICopilot({ role }: { role?: string }) {
     
     setMessages([
       ...messages,
-      { id: Date.now().toString(), role: 'user', content: localInput },
-      { id: (Date.now() + 1).toString(), role: 'assistant', content: "🤖 DevSia AI Copilot is currently paused for weekend maintenance and updates. We will be back online this Monday!" }
+      { id: Date.now().toString(), role: 'user', content: localInput } as any,
+      { id: (Date.now() + 1).toString(), role: 'assistant', content: "🤖 DevSia AI Copilot is currently paused for weekend maintenance and updates. We will be back online this Monday!" } as any
     ]);
     setLocalInput('');
     return;
@@ -602,7 +602,7 @@ export default function AICopilot({ role }: { role?: string }) {
         setMessages([
           ...messages,
           { id: Date.now().toString(), role: 'user', content: s },
-          { id: (Date.now() + 1).toString(), role: 'assistant', content: "🤖 DevSia AI Copilot is currently paused for weekend maintenance and updates. We will be back online this Monday!" }
+          { id: (Date.now() + 1).toString(), role: 'assistant', content: "🤖 DevSia AI Copilot is currently paused for weekend maintenance and updates. We will be back online this Monday!" } as any
         ]);
     }}
                         className="text-xs bg-white border border-slate-200 rounded-xl px-3 py-2.5 text-slate-600 hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-700 transition-all text-left shadow-sm"
