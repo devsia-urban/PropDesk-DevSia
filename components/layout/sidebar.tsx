@@ -165,7 +165,6 @@ export function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
                 if (profile?.role === 'agent' && item.label === 'Brokers') return false
                 if (item.label === 'Associates') {
                   if (profile?.role !== 'admin') return false
-                  if (agency?.plan_type === 'free' || agency?.plan_type === 'monthly') return false
                 }
                 return true
               })
