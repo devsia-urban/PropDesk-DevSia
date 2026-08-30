@@ -56,7 +56,7 @@ export async function createClient(formData: ClientFormValues) {
   }
 
   // Notify Admins about the assignment
-  await notifyAgencyAdmins(profile.agency_id, {
+  await notifyAgencyAdmins(profile.agency_id as string, {
     type: 'new_client',
     title: '🤝 Lead Assigned',
     message: `${client.full_name} has been assigned to ${isAssignedToOther ? 'an agent' : 'you'} by ${profile.full_name}`,
@@ -179,7 +179,7 @@ export async function deleteClient(id: string) {
 
   // 🔔 Trigger Notifications
   const { data: clientName } = await supabaseAdmin.from('clients').select('full_name').eq('id', id).single()
-  await notifyAgencyAdmins(profile.agency_id, {
+  await notifyAgencyAdmins(profile.agency_id as string, {
     type: 'new_client',
     title: '🗑️ Client Deleted',
     message: `${profile.full_name} removed the client: ${clientName?.full_name || 'Unknown'}`,
