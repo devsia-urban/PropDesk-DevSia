@@ -114,7 +114,7 @@ export async function updateClient(id: string, formData: Partial<ClientFormValue
     // 🔔 Trigger Push Notification for Agent Assignment
     const { data: agentProfile } = await supabase.from('profiles').select('full_name').eq('id', formData.assigned_to).single()
     const { sendUserNotification } = await import('@/lib/services/notification')
-    await sendUserNotification(formData.assigned_to, profile.agency_id, {
+    await sendUserNotification(formData.assigned_to, profile.agency_id as string, {
       type: 'new_client',
       title: '👤 New Lead Assigned',
       message: `You have been assigned to ${client.full_name}. Tap to view requirements.`,
