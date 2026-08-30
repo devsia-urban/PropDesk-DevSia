@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Govardhan Empire CRM Proposal | Software Preview v1.0</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- AOS Animation CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #0A192F;    /* Dark Blue */
+            --primary-light: #112240;
+            --accent: #D4AF37;     /* Gold */
+            --accent-hover: #F3C93F;
+            --bg: #F8FAFC;         /* Off White */
+            --card-bg: #FFFFFF;
+            --text-main: #1E293B;
+            --text-muted: #64748B;
+            --white: #FFFFFF;
+            --radius: 12px;
+            --shadow: 0 10px 30px -10px rgba(2, 12, 27, 0.1);
+            --shadow-hover: 0 20px 40px -15px rgba(2, 12, 27, 0.2);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--primary);
+            line-height: 1.2;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto 3rem auto;
+        }
+
+        .highlight {
+            color: var(--accent);
+        }
+
+        /* Navbar */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            font-size: 1.5rem;
+            color: var(--primary);
+            cursor: pointer;
+        }
+
+        /* Button */
+        .btn {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--primary);
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        .btn:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+        }
+
+        .btn-outline:hover {
+            background: var(--accent);
+            color: var(--primary);
+        }
+
+        /* Sections General */
+        section {
+            padding: 6rem 5%;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            background: linear-gradient(rgba(10, 25, 47, 0.85), rgba(10, 25, 47, 0.95)), url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop') center/cover;
+            color: var(--white);
+            padding-top: 80px;
+            text-align: center;
+            justify-content: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            z-index: 2;
+        }
+
+        .badge {
+            background: rgba(212, 175, 55, 0.2);
+            color: var(--accent);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            color: var(--white);
+            margin-bottom: 1rem;
+            font-weight: 800;
+            line-height: 1.1;
+        }
+
+        .hero p.subtitle {
+            font-size: 1.25rem;
+            color: #CBD5E1;
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        /* Need Section */
+        .need-section {
+            background: var(--white);
+        }
+
+        .comparison-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .problem-card, .solution-card {
+            padding: 2.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .problem-card {
+            background: #FFF5F5;
+            border-top: 4px solid #FC8181;
+        }
+
+        .solution-card {
+            background: #F0FFF4;
+            border-top: 4px solid #68D391;
+        }
+
+        .problem-card:hover, .solution-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card-heading {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .problem-card .card-heading i { color: #E53E3E; }
+        .solution-card .card-heading i { color: #38A169; }
+
+        .list-items {
+            list-style: none;
+        }
+
+        .list-items li {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 1.1rem;
+        }
+
+        .problem-card li i { color: #E53E3E; margin-top: 5px; }
+        .solution-card li i { color: #38A169; margin-top: 5px; }
+
+        /* Features Section */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--accent);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(10, 25, 47, 0.05);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover .feature-icon {
+            background: var(--primary);
+            color: var(--accent);
+        }
+
+        .feature-card h3 {
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .feature-card p, .feature-card ul {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .feature-card ul {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .feature-card ul li {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .feature-card ul li i {
+            color: var(--accent);
+            font-size: 0.8rem;
+        }
+
+        /* Automation Flow */
+        .automation-section {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .automation-section .section-title, 
+        .automation-section .section-subtitle {
+            color: var(--white);
+        }
+        
+        .automation-section .section-subtitle {
+            color: #94A3B8;
+        }
+
+        .flow-container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .flow-container::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            height: 100%;
+            width: 2px;
+            background: rgba(212, 175, 55, 0.3);
+            transform: translateX(-50%);
+        }
+
+        .flow-step {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .flow-content {
+            background: var(--primary-light);
+            padding: 1.2rem 2rem;
+            border-radius: 50px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 500;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            transition: var(--transition);
+        }
+
+        .flow-content:hover {
+            border-color: var(--accent);
+            transform: scale(1.05);
+        }
+
+        .flow-content i {
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+
+        .flow-arrow {
+            color: var(--accent);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Dashboard Preview */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: var(--transition);
+            border-left: 4px solid var(--accent);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .stat-info h4 {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 0.2rem;
+            font-weight: 500;
+        }
+
+        .stat-info p {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* Notifications & Pages */
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .tag {
+            background: var(--white);
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            box-shadow: var(--shadow);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+            border: 1px solid rgba(0,0,0,0.03);
+        }
+        
+        .tag i {
+            color: var(--accent);
+        }
+
+        .tag:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateY(-3px);
+        }
+        
+        .tag:hover i {
+            color: var(--white);
+        }
+
+        /* Technology */
+        .tech-section {
+            background: var(--white);
+        }
+
+        .tech-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 3rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .tech-item {
+            text-align: center;
+            width: 120px;
+        }
+
+        .tech-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            transition: var(--transition);
+        }
+
+        .tech-item:hover .tech-icon {
+            color: var(--accent);
+            transform: scale(1.1);
+        }
+
+        .tech-item p {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        /* Investment / Pricing */
+        .pricing-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: var(--white);
+        }
+
+        .pricing-section .section-title,
+        .pricing-section .section-subtitle {
+            color: var(--white);
+        }
+        
+        .pricing-section .section-subtitle {
+            color: #94A3B8;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .price-card {
+            background: var(--white);
+            color: var(--text-main);
+            padding: 3rem 2rem;
+            border-radius: var(--radius);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .price-card.featured {
+            border: 2px solid var(--accent);
+            transform: scale(1.05);
+        }
+
+        .price-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .price-card.featured:hover {
+            transform: scale(1.05) translateY(-10px);
+        }
+
+        .price-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .price-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .price-amount {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1;
+        }
+
+        .price-amount span {
+            font-size: 1rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .price-features {
+            list-style: none;
+        }
+
+        .price-features li {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .price-features li i {
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+        
+        .third-party-note {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 2rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: var(--radius);
+            border: 1px solid rgba(255,255,255,0.1);
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .third-party-note h4 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        .tp-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .tp-item {
+            background: rgba(0,0,0,0.2);
+            padding: 1rem;
+            border-radius: 8px;
+        }
+        
+        .tp-item span {
+            display: block;
+            font-size: 0.85rem;
+            color: #94A3B8;
+            margin-top: 5px;
+        }
+
+        /* Why Choose */
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .benefit-item {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: var(--shadow);
+            border-left: 3px solid var(--accent);
+        }
+
+        .benefit-item i {
+            color: var(--accent);
+            font-size: 1.5rem;
+        }
+        
+        .benefit-item p {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        /* Footer/Contact */
+        footer {
+            background: #060F1E;
+            color: var(--white);
+            padding: 5rem 5% 2rem 5%;
+        }
+
+        .footer-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 3rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 3rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-logo h2 {
+            color: var(--white);
+            margin-bottom: 1rem;
+        }
+        
+        .footer-logo h2 i {
+            color: var(--accent);
+        }
+        
+        .footer-logo p {
+            color: #94A3B8;
+            max-width: 300px;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .contact-card {
+            background: rgba(255,255,255,0.05);
+            padding: 1.5rem 2rem;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .contact-card i {
+            font-size: 2rem;
+            color: var(--accent);
+        }
+
+        .contact-details h4 {
+            font-size: 0.9rem;
+            color: #94A3B8;
+            margin-bottom: 0.2rem;
+        }
+        
+        .contact-details p {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .copyright {
+            text-align: center;
+            color: #94A3B8;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            section {
+                padding: 4rem 5%;
+            }
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            .hero p.subtitle {
+                font-size: 1.1rem;
+            }
+            .section-title {
+                font-size: 2rem;
+            }
+            .comparison-container {
+                grid-template-columns: 1fr;
+            }
+            .flow-content {
+                flex-direction: column;
+                text-align: center;
+                padding: 1rem;
+                border-radius: 15px;
+            }
+            .flow-content i {
+                margin-bottom: 5px;
+                font-size: 1.5rem;
+            }
+            .contact-card {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+            nav {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content" data-aos="fade-up">
+            <div class="badge">Software Preview v1.0</div>
+            <h1>Govardhan Empire Real Estate Management Software</h1>
+            <p class="subtitle">A complete custom-built business management system specially designed for Govardhan Empire Group.</p>
+            <p style="margin-bottom: 2.5rem; font-size: 1.1rem; color: #E2E8F0;">One unified software to manage Leads, Customers, Bookings, Installments, Team, Commission, Townships, Reports, and Automation.</p>
+            <a href="#features" class="btn">View Complete Software <i class="fa-solid fa-arrow-right" style="margin-left: 8px;"></i></a>
+        </div>
+    </section>
+
+    <!-- Why We Need This Section -->
+    <section id="need" class="need-section">
+        <h2 class="section-title" data-aos="fade-up">Why Upgrade Your Business?</h2>
+        <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">Transitioning from manual processes to an automated digital system saves time, stops leakages, and scales your business.</p>
+        
+        <div class="comparison-container">
+            <div class="problem-card" data-aos="fade-right">
+                <h3 class="card-heading"><i class="fa-solid fa-triangle-exclamation"></i> The Current Manual Way</h3>
+                <p style="margin-bottom: 1.5rem; color: #718096;">Right now, most of the crucial work is done manually which consumes time and leads to errors.</p>
+                <ul class="list-items">
+                    <li><i class="fa-solid fa-xmark"></i> Managing Excel files & Registers</li>
+                    <li><i class="fa-solid fa-xmark"></i> Relying heavily on WhatsApp & Phone Calls</li>
+                    <li><i class="fa-solid fa-xmark"></i> Missing payment collections occasionally</li>
+                    <li><i class="fa-solid fa-xmark"></i> Forgetting leads & follow-ups</li>
+                    <li><i class="fa-solid fa-xmark"></i> Complex & error-prone manual commission calculations</li>
+                </ul>
+            </div>
+            
+            <div class="solution-card" data-aos="fade-left">
+                <h3 class="card-heading"><i class="fa-solid fa-check-circle"></i> The Software Solution</h3>
+                <p style="margin-bottom: 1.5rem; color: #4A5568;">Everything will be solved and managed from one central unified platform.</p>
+                <ul class="list-items">
+                    <li><i class="fa-solid fa-check"></i> 100% Paperless & Cloud-based data</li>
+                    <li><i class="fa-solid fa-check"></i> Automated lead capture & reminders</li>
+                    <li><i class="fa-solid fa-check"></i> Instant & accurate installment tracking</li>
+                    <li><i class="fa-solid fa-check"></i> Never miss a client follow-up again</li>
+                    <li><i class="fa-solid fa-check"></i> Auto-calculated team & hierarchy commissions</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features">
+        <h2 class="section-title" data-aos="fade-up">What Your Software Will Do</h2>
+        <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">A comprehensive suite of modules tailored perfectly for real estate operations.</p>
+        
+        <div class="features-grid">
+            <!-- Feature 1 -->
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="feature-icon"><i class="fa-solid fa-funnel-dollar"></i></div>
+                <h3>Lead Management</h3>
+                <p>Whenever a customer comes from Facebook, Instagram, Website, or Direct Call, their details automatically sync into the software. No manual data entry.</p>
+            </div>
+            
+            <!-- Feature 2 -->
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-icon"><i class="fa-solid fa-users-viewfinder"></i></div>
+                <h3>Customer Management</h3>
+                <p>Every customer gets a dedicated profile. Everything at one place.</p>
+                <ul>
+                    <li><i class="fa-solid fa-circle-check"></i> Name, Phone, Address</li>
+                    <li><i class="fa-solid fa-circle-check"></i> Documents & Booking details</li>
+                    <li><i class="fa-solid fa-circle-check"></i> Complete Payment History</li>
+                </ul>
+            </div>
+
+            <!-- Feature 3 -->
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="feature-icon"><i class="fa-solid fa-sitemap"></i></div>
+                <h3>Team Management</h3>
+                <p>Role-based secure access. Everyone only sees their own work.</p>
+                <ul>
+                    <li><i class="fa-solid fa-circle-check"></i> Admin & Manager Logins</li>
+                    <li><i class="fa-solid fa-circle-check"></i> Leader & Sales Agent Portals</li>
+                    <li><i class="fa-solid fa-circle-check"></i> Performance Tracking</li>
+                </ul>
+            </div>
+
+            <!-- Feature 4 -->
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
+                <div class="feature-icon"><i class="fa-solid fa-map-location-dot"></i></div>
+                <h3>Township Management</h3>
+                <p>Create unlimited projects, blocks, and roads. Visual plot status mapping.</p>
+                <ul>
+                    <li><i class="fa-solid fa-circle-check"></i> Mark Available / Booked</li>
+                    <li><i class="fa-solid fa-circle-check"></i> Mark Reserved / Sold</li>
+                    <li><i class="fa-solid fa-circle-check"></i> Real-time inventory status</li>
+                </ul>
+            </div>
+
+            <!-- Feature 5 -->
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="500">
+                <div class="feature-icon"><i class="fa-solid fa-file-signature"></i></div>
+                <h3>Booking System</h3>
+                <p>End-to-end automated digital booking process.</p>
+                <ul>
+                    <li><i class="fa-solid fa-circle-check"></i> Auto-generate Booking Number</li>
+                    <li><i class="fa-solid fa-circle-check"></i> Token & Receipt Generation</li>
+                    <li><i class="fa-solid fa-circle-check"></i> Auto-generate Agreements</li>
+                </ul>
+            </div>
+
+            <!-- Feature 6 -->
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="600">
+                <div class="feature-icon"><i class="fa-solid fa-money-bill-trend-up"></i></div>
+                <h3>Installment System</h3>
+                <p>Track every single payment accurately. Always know what is due.</p>
+                <ul>
+                    <li><i class="fa-solid fa-circle-check"></i> Paid & Remaining Amount</li>
+                    <li><i class="fa-solid fa-circle-check"></i> Next Installment Due Dates</li>
+                    <li><i class="fa-solid fa-circle-check"></i> Late Payment History tracking</li>
+                </ul>
+            </div>
+
+            <!-- Feature 7 -->
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="700">
+                <div class="feature-icon"><i class="fa-solid fa-chart-pie"></i></div>
+                <h3>Commission System</h3>
+                <p>Software will automatically calculate payouts according to company rules.</p>
+                <ul>
+                    <li><i class="fa-solid fa-circle-check"></i> Sales & Leader Income</li>
+                    <li><i class="fa-solid fa-circle-check"></i> Royal Income & Rewards</li>
+                    <li><i class="fa-solid fa-circle-check"></i> Zero manual calculation errors</li>
+                </ul>
+            </div>
+
+            <!-- Feature 8 -->
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="800">
+                <div class="feature-icon"><i class="fa-solid fa-file-contract"></i></div>
+                <h3>Advanced Reports</h3>
+                <p>Complete business oversight in just one click.</p>
+                <ul>
+                    <li><i class="fa-solid fa-circle-check"></i> Daily & Monthly Sales</li>
+                    <li><i class="fa-solid fa-circle-check"></i> Collection & Pending Dues</li>
+                    <li><i class="fa-solid fa-circle-check"></i> Top Agent & Top Project stats</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Automation Flow Section -->
+    <section id="automation" class="automation-section">
+        <h2 class="section-title" data-aos="fade-up">Intelligent Automation</h2>
+        <p class="section-subtitle" data-aos="fade-up">The software works for you automatically in the background, keeping everyone informed instantly.</p>
+        
+        <div class="flow-container">
+            <div class="flow-step" data-aos="fade-up">
+                <div class="flow-content">
+                    <i class="fa-solid fa-magnet"></i> New Lead Comes
+                </div>
+            </div>
+            <div class="flow-arrow" data-aos="fade-up" data-aos-delay="50"><i class="fa-solid fa-angles-down"></i></div>
+            
+            <div class="flow-step" data-aos="fade-up" data-aos-delay="100">
+                <div class="flow-content">
+                    <i class="fa-solid fa-bell-concierge"></i> Agent Gets Notification & Meeting Fixed
+                </div>
+            </div>
+            <div class="flow-arrow" data-aos="fade-up" data-aos-delay="150"><i class="fa-solid fa-angles-down"></i></div>
+            
+            <div class="flow-step" data-aos="fade-up" data-aos-delay="200">
+                <div class="flow-content">
+                    <i class="fa-brands fa-whatsapp"></i> Reminder Sent to Agent & Client
+                </div>
+            </div>
+            <div class="flow-arrow" data-aos="fade-up" data-aos-delay="250"><i class="fa-solid fa-angles-down"></i></div>
+            
+            <div class="flow-step" data-aos="fade-up" data-aos-delay="300">
+                <div class="flow-content">
+                    <i class="fa-solid fa-handshake"></i> Meeting Complete & Admin Gets Update
+                </div>
+            </div>
+            <div class="flow-arrow" data-aos="fade-up" data-aos-delay="350"><i class="fa-solid fa-angles-down"></i></div>
+            
+            <div class="flow-step" data-aos="fade-up" data-aos-delay="400">
+                <div class="flow-content">
+                    <i class="fa-solid fa-file-invoice-dollar"></i> Booking Done & Receipt Auto-Generated
+                </div>
+            </div>
+            <div class="flow-arrow" data-aos="fade-up" data-aos-delay="450"><i class="fa-solid fa-angles-down"></i></div>
+            
+            <div class="flow-step" data-aos="fade-up" data-aos-delay="500">
+                <div class="flow-content">
+                    <i class="fa-solid fa-clock-rotate-left"></i> Installment & Payment Reminders Active
+                </div>
+            </div>
+            <div class="flow-arrow" data-aos="fade-up" data-aos-delay="550"><i class="fa-solid fa-angles-down"></i></div>
+
+            <div class="flow-step" data-aos="fade-up" data-aos-delay="600">
+                <div class="flow-content" style="background: var(--accent); color: var(--primary); border: none;">
+                    <i class="fa-solid fa-sack-dollar" style="color: var(--primary);"></i> Commissions Automatically Updated
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pages / Business Management System -->
+    <section id="pages">
+        <h2 class="section-title" data-aos="fade-up">Your Business Management System</h2>
+        <p class="section-subtitle" data-aos="fade-up">Nearly 20+ dedicated pages and portals built to handle every aspect of your real estate empire seamlessly.</p>
+        
+        <div class="tags-container" data-aos="fade-up" data-aos-delay="100">
+            <div class="tag"><i class="fa-solid fa-gauge-high"></i> Dashboard</div>
+            <div class="tag"><i class="fa-solid fa-right-to-bracket"></i> Secure Login</div>
+            <div class="tag"><i class="fa-solid fa-filter"></i> Leads</div>
+            <div class="tag"><i class="fa-solid fa-users"></i> Customers</div>
+            <div class="tag"><i class="fa-solid fa-city"></i> Projects & Townships</div>
+            <div class="tag"><i class="fa-solid fa-cubes"></i> Blocks</div>
+            <div class="tag"><i class="fa-solid fa-map-pin"></i> Plots Inventory</div>
+            <div class="tag"><i class="fa-solid fa-book-open"></i> Booking Portal</div>
+            <div class="tag"><i class="fa-solid fa-credit-card"></i> Payments</div>
+            <div class="tag"><i class="fa-solid fa-calendar-check"></i> Installments</div>
+            <div class="tag"><i class="fa-solid fa-percent"></i> Commission structure</div>
+            <div class="tag"><i class="fa-solid fa-trophy"></i> Rewards</div>
+            <div class="tag"><i class="fa-solid fa-chart-line"></i> Analytics & Reports</div>
+            <div class="tag"><i class="fa-solid fa-folder-open"></i> Documents</div>
+            <div class="tag"><i class="fa-solid fa-bell"></i> Notifications Hub</div>
+            <div class="tag"><i class="fa-solid fa-people-group"></i> Team Directory</div>
+            <div class="tag"><i class="fa-solid fa-user-shield"></i> Roles & Permissions</div>
+            <div class="tag"><i class="fa-solid fa-gear"></i> Settings</div>
+            <div class="tag"><i class="fa-solid fa-clipboard-list"></i> Activity Logs</div>
+            <div class="tag"><i class="fa-solid fa-mobile-screen"></i> Client Portal</div>
+        </div>
+    </section>
+
+    <!-- Dashboard Preview (Stats Cards) -->
+    <section style="background: #F1F5F9; border-top: 1px solid #E2E8F0;">
+        <h2 class="section-title" data-aos="fade-up">Live Dashboard Preview</h2>
+        <p class="section-subtitle" data-aos="fade-up">Imagine logging in every morning and seeing your business health at a glance.</p>
+        
+        <div class="dashboard-grid">
+            <div class="stat-card" data-aos="zoom-in" data-aos-delay="50">
+                <div class="stat-icon"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+                <div class="stat-info">
+                    <h4>Today's Sales</h4>
+                    <p>₹12,50,000</p>
+                </div>
+            </div>
+            <div class="stat-card" data-aos="zoom-in" data-aos-delay="100">
+                <div class="stat-icon"><i class="fa-solid fa-wallet"></i></div>
+                <div class="stat-info">
+                    <h4>Today's Collection</h4>
+                    <p>₹4,20,000</p>
+                </div>
+            </div>
+            <div class="stat-card" data-aos="zoom-in" data-aos-delay="150">
+                <div class="stat-icon"><i class="fa-solid fa-clock"></i></div>
+                <div class="stat-info">
+                    <h4>Pending Installments</h4>
+                    <p>34 Due</p>
+                </div>
+            </div>
+            <div class="stat-card" data-aos="zoom-in" data-aos-delay="200">
+                <div class="stat-icon"><i class="fa-solid fa-fire"></i></div>
+                <div class="stat-info">
+                    <h4>Today's Leads</h4>
+                    <p>42 New</p>
+                </div>
+            </div>
+            <div class="stat-card" data-aos="zoom-in" data-aos-delay="250">
+                <div class="stat-icon"><i class="fa-solid fa-file-contract"></i></div>
+                <div class="stat-info">
+                    <h4>Bookings This Month</h4>
+                    <p>28 Lots</p>
+                </div>
+            </div>
+            <div class="stat-card" data-aos="zoom-in" data-aos-delay="300">
+                <div class="stat-icon"><i class="fa-solid fa-map-location-dot"></i></div>
+                <div class="stat-info">
+                    <h4>Available Plots</h4>
+                    <p>156</p>
+                </div>
+            </div>
+            <div class="stat-card" data-aos="zoom-in" data-aos-delay="350">
+                <div class="stat-icon"><i class="fa-solid fa-medal"></i></div>
+                <div class="stat-info">
+                    <h4>Top Agent</h4>
+                    <p>Ravi Sharma</p>
+                </div>
+            </div>
+            <div class="stat-card" data-aos="zoom-in" data-aos-delay="400">
+                <div class="stat-icon"><i class="fa-solid fa-crown"></i></div>
+                <div class="stat-info">
+                    <h4>Top Leader</h4>
+                    <p>Amit Singh</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology & Timeline -->
+    <section class="tech-section">
+        <h2 class="section-title" data-aos="fade-up">Modern Technology Stack</h2>
+        <p class="section-subtitle" data-aos="fade-up">Built on the latest, fastest, and most secure cloud technologies available.</p>
+        
+        <div class="tech-grid" style="margin-bottom: 5rem;">
+            <div class="tech-item" data-aos="fade-up" data-aos-delay="100">
+                <i class="fa-brands fa-react tech-icon"></i>
+                <p>Next.js</p>
+            </div>
+            <div class="tech-item" data-aos="fade-up" data-aos-delay="150">
+                <i class="fa-solid fa-database tech-icon"></i>
+                <p>Supabase</p>
+            </div>
+            <div class="tech-item" data-aos="fade-up" data-aos-delay="200">
+                <i class="fa-solid fa-server tech-icon"></i>
+                <p>Vercel</p>
+            </div>
+            <div class="tech-item" data-aos="fade-up" data-aos-delay="250">
+                <i class="fa-solid fa-cloud tech-icon"></i>
+                <p>Cloud Based</p>
+            </div>
+            <div class="tech-item" data-aos="fade-up" data-aos-delay="300">
+                <i class="fa-solid fa-shield-halved tech-icon"></i>
+                <p>Ultra Secure</p>
+            </div>
+            <div class="tech-item" data-aos="fade-up" data-aos-delay="350">
+                <i class="fa-solid fa-bolt tech-icon"></i>
+                <p>Blazing Fast</p>
+            </div>
+            <div class="tech-item" data-aos="fade-up" data-aos-delay="400">
+                <i class="fa-solid fa-laptop-mobile tech-icon"></i>
+                <p>Mobile & Laptop</p>
+            </div>
+        </div>
+
+        <h2 class="section-title" data-aos="fade-up">Development Timeline</h2>
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; max-width: 900px; margin: 0 auto; align-items: center;" data-aos="fade-up">
+            <div class="tag" style="background: var(--primary); color: var(--accent);">Planning</div>
+            <i class="fa-solid fa-arrow-right" style="color: var(--text-muted);"></i>
+            <div class="tag" style="background: var(--primary); color: var(--accent);">UI Design</div>
+            <i class="fa-solid fa-arrow-right" style="color: var(--text-muted);"></i>
+            <div class="tag" style="background: var(--primary); color: var(--accent);">Development</div>
+            <i class="fa-solid fa-arrow-right" style="color: var(--text-muted);"></i>
+            <div class="tag" style="background: var(--primary); color: var(--accent);">Testing</div>
+            <i class="fa-solid fa-arrow-right" style="color: var(--text-muted);"></i>
+            <div class="tag" style="background: var(--primary); color: var(--accent);">Launch</div>
+            <i class="fa-solid fa-arrow-right" style="color: var(--text-muted);"></i>
+            <div class="tag" style="background: var(--primary); color: var(--accent);">Support</div>
+        </div>
+    </section>
+
+    <!-- Investment Section -->
+    <section id="investment" class="pricing-section">
+        <h2 class="section-title" data-aos="fade-up">Investment</h2>
+        <p class="section-subtitle" style="margin-bottom: 0;" data-aos="fade-up">Let's connect and discuss the investment required to build this highly scalable system tailored precisely to your needs. We will finalize all details on our call to make it perfectly align with your vision.</p>
+        
+        <div style="text-align: center; margin-top: 3rem;" data-aos="fade-up" data-aos-delay="100">
+            <a href="#contact" class="btn" style="background: var(--white); color: var(--primary);">Schedule Call</a>
+        </div>
+    </section>
+
+    <!-- Why Choose This Software -->
+    <section>
+        <h2 class="section-title" data-aos="fade-up">Why Choose This Software?</h2>
+        <p class="section-subtitle" data-aos="fade-up">The ultimate transformation for your real estate operations.</p>
+        
+        <div class="benefits-grid">
+            <div class="benefit-item" data-aos="zoom-in" data-aos-delay="50"><i class="fa-solid fa-ban"></i> <p>No Excel Dependency</p></div>
+            <div class="benefit-item" data-aos="zoom-in" data-aos-delay="100"><i class="fa-solid fa-file-circle-xmark"></i> <p>No Paper Work</p></div>
+            <div class="benefit-item" data-aos="zoom-in" data-aos-delay="150"><i class="fa-solid fa-globe"></i> <p>Everything 100% Online</p></div>
+            <div class="benefit-item" data-aos="zoom-in" data-aos-delay="200"><i class="fa-solid fa-calculator"></i> <p>Automatic Calculations</p></div>
+            <div class="benefit-item" data-aos="zoom-in" data-aos-delay="250"><i class="fa-solid fa-clock-rotate-left"></i> <p>Automatic Reminders</p></div>
+            <div class="benefit-item" data-aos="zoom-in" data-aos-delay="300"><i class="fa-solid fa-chart-bar"></i> <p>Automatic Reports</p></div>
+            <div class="benefit-item" data-aos="zoom-in" data-aos-delay="350"><i class="fa-solid fa-coins"></i> <p>Automatic Commission</p></div>
+            <div class="benefit-item" data-aos="zoom-in" data-aos-delay="400"><i class="fa-solid fa-face-smile"></i> <p>Extremely Easy to Use</p></div>
+            <div class="benefit-item" data-aos="zoom-in" data-aos-delay="450"><i class="fa-solid fa-bolt"></i> <p>Lightning Fast</p></div>
+            <div class="benefit-item" data-aos="zoom-in" data-aos-delay="500"><i class="fa-solid fa-lock"></i> <p>Bank-Grade Security</p></div>
+            <div class="benefit-item" data-aos="zoom-in" data-aos-delay="550"><i class="fa-solid fa-cloud-arrow-up"></i> <p>Cloud Based Platform</p></div>
+            <div class="benefit-item" data-aos="zoom-in" data-aos-delay="600"><i class="fa-solid fa-rocket"></i> <p>Future Ready</p></div>
+        </div>
+    </section>
+
+    <!-- Footer / Contact -->
+    <footer id="contact">
+        <div class="footer-content" data-aos="fade-up">
+            <div class="footer-logo">
+                <h2><i class="fa-solid fa-building-user"></i> Govardhan Empire</h2>
+                <p>Transforming real estate management with next-generation digital automation and smart tools.</p>
+            </div>
+            
+            <div class="contact-info">
+                <div class="contact-card">
+                    <i class="fa-solid fa-user-tie"></i>
+                    <div class="contact-details">
+                        <h4>Prepared For</h4>
+                        <p>Govardhan Empire Group</p>
+                    </div>
+                </div>
+                
+                <div class="contact-card">
+                    <i class="fa-solid fa-code"></i>
+                    <div class="contact-details">
+                        <h4>Prepared By</h4>
+                        <p>DhoniDev-Ai</p>
+                    </div>
+                </div>
+                
+                <div class="contact-card">
+                    <i class="fa-solid fa-calendar-day"></i>
+                    <div class="contact-details">
+                        <h4>Date</h4>
+                        <p id="current-date">October 2023</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            &copy; <span id="year"></span> Software Preview v1.0 | Confidential & Proprietary Document
+        </div>
+    </footer>
+
+    <!-- AOS Script -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Initialize AOS animations
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 100
+        });
+
+        // Sticky Navbar effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.style.background = 'rgba(255, 255, 255, 0.98)';
+                nav.style.boxShadow = '0 5px 20px rgba(0,0,0,0.1)';
+            } else {
+                nav.style.background = 'rgba(255, 255, 255, 0.9)';
+                nav.style.boxShadow = '0 2px 10px rgba(0,0,0,0.05)';
+            }
+        });
+        
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Set dynamic date
+        const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('current-date').innerText = new Date().toLocaleDateString('en-US', dateOptions);
+        document.getElementById('year').innerText = new Date().getFullYear();
+    </script>
+</body>
+</html>

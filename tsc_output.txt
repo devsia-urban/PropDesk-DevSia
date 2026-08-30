@@ -1,0 +1,1 @@
+components/team/team-client.tsx(538,1): error TS1005: '}' expected.
