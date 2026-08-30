@@ -116,7 +116,7 @@ export async function createProperty(formData: PropertyFormValues) {
 
   // 🔔 Trigger Notifications
   // Notify everyone in the agency about the new property
-  await notifyAgencyAdmins(profile.agency_id, {
+  await notifyAgencyAdmins(profile.agency_id as string, {
     type: 'property_update',
     title: '🏠 New Property Added',
     message: `${profile.full_name} added a new property: ${data.title}`,
@@ -240,7 +240,7 @@ export async function deleteProperty(id: string) {
     })
 
   // 🔔 Trigger Notifications
-  await notifyAgencyAdmins(profile.agency_id, {
+  await notifyAgencyAdmins(profile.agency_id as string, {
     type: 'property_update',
     title: '🗑️ Property Deleted',
     message: `${profile.full_name} removed the property: ${property.title}`,

@@ -70,7 +70,7 @@ export async function logInteraction(params: {
   if (profile.role === 'agent') {
     const { data: client } = await supabase.from('clients').select('full_name').eq('id', params.clientId).single()
     
-    await notifyAgencyAdmins(profile.agency_id, {
+    await notifyAgencyAdmins(profile.agency_id as string, {
       type: 'property_update',
       title: `✅ Call Completed: ${client?.full_name}`,
       message: `${profile.full_name} completed call with this update: "${params.overview}"`,
