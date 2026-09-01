@@ -5,11 +5,26 @@ import { Card } from '@/components/ui/card'
 import { MapPin, Phone, Briefcase, Mail, CheckCircle, XCircle } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
 import useSWR from 'swr'
-import { getAssociates } from '@/lib/actions/associates'
+import { getAssociates, updateAssociateStatus } from '@/lib/actions/associates'
+import { toast } from 'sonner'
 import { Skeleton } from '@/components/ui/skeleton'
 
 export function AssociatesClient({ agencyId }: { agencyId: string }) {
   const { data: applications, isLoading, error, mutate } = useSWR('associates', () => getAssociates())
+  const [isUpdating, setIsUpdating] = React.useState<string | null>(null)
+
+  const handleUpdateStatus = async (id: string, status: 'approved' | 'rejected') => {
+    try {
+      setIsUpdating(id)
+      await updateAssociateStatus(id, status)
+      toast.success(`Application ${status}!`)
+      mutate()
+    } catch (err: any) {
+      toast.error(err.message)
+    } finally {
+      setIsUpdating(null)
+    }
+  }
 
   return (
     <div className="space-y-6 pb-20">
@@ -116,15 +131,29 @@ export function AssociatesClient({ agencyId }: { agencyId: string }) {
                   <span className="text-slate-500 font-medium">Works with other company?</span>
                   <span className="text-slate-900 font-semibold text-right">{app.works_with_other_company ? 'Yes' : 'No'}</span>
                 </div>
+                {app.works_with_other_company && app.other_company_name && (
+                  <div className="flex justify-between pt-2 mt-2 border-t border-slate-200/60">
+                    <span className="text-slate-500 font-medium">Company Name</span>
+                    <span className="text-slate-900 font-semibold text-right">{app.other_company_name}</span>
+                  </div>
+                )}
               </div>
 
               {app.status === 'pending' && (
                 <div className="mt-6 flex gap-3">
-                  <button className="flex-1 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 hover:text-emerald-800 font-bold h-11 rounded-xl flex items-center justify-center gap-2 transition-colors">
-                    <CheckCircle className="w-4 h-4" /> Approve
+                  <button 
+                    onClick={() => handleUpdateStatus(app.id, 'approved')}
+                    disabled={isUpdating === app.id}
+                    className="flex-1 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 hover:text-emerald-800 font-bold h-11 rounded-xl flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
+                  >
+                    {isUpdating === app.id ? <div className="w-4 h-4 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" /> : <CheckCircle className="w-4 h-4" />} Approve
                   </button>
-                  <button className="flex-1 bg-red-50 text-red-700 hover:bg-red-100 hover:text-red-800 font-bold h-11 rounded-xl flex items-center justify-center gap-2 transition-colors">
-                    <XCircle className="w-4 h-4" /> Reject
+                  <button 
+                    onClick={() => handleUpdateStatus(app.id, 'rejected')}
+                    disabled={isUpdating === app.id}
+                    className="flex-1 bg-red-50 text-red-700 hover:bg-red-100 hover:text-red-800 font-bold h-11 rounded-xl flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
+                  >
+                    {isUpdating === app.id ? <div className="w-4 h-4 border-2 border-red-500 border-t-transparent rounded-full animate-spin" /> : <XCircle className="w-4 h-4" />} Reject
                   </button>
                 </div>
               )}
