@@ -28,7 +28,7 @@ interface ClientOption {
 
 export function BookingForm({ propertyId, propertyTitle, bookingType, onClose, unitId }: BookingFormProps) {
   const router = useRouter()
-  const { profile } = useAuth()
+  const { profile, user } = useAuth()
   const [isPending, startTransition] = useTransition()
 
   // Agent details
@@ -161,11 +161,11 @@ export function BookingForm({ propertyId, propertyTitle, bookingType, onClose, u
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <Label className="text-xs font-semibold text-slate-500">Name</Label>
-                <Input value={profile?.full_name || ''} disabled className="bg-slate-50 border-slate-100 text-slate-600 font-medium text-sm h-10 rounded-xl mt-1" />
+                <Input value={profile?.full_name || user?.user_metadata?.full_name || ''} disabled className="bg-slate-50 border-slate-100 text-slate-600 font-medium text-sm h-10 rounded-xl mt-1" />
               </div>
               <div>
                 <Label className="text-xs font-semibold text-slate-500">Phone</Label>
-                <Input value={profile?.phone || 'Not set'} disabled className="bg-slate-50 border-slate-100 text-slate-600 font-medium text-sm h-10 rounded-xl mt-1" />
+                <Input value={profile?.phone || user?.user_metadata?.phone || 'Not set'} disabled className="bg-slate-50 border-slate-100 text-slate-600 font-medium text-sm h-10 rounded-xl mt-1" />
               </div>
             </div>
             <div>

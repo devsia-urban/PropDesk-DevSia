@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json()
-    const { email, role } = body as { email: string; role: UserRole }
+    const { email, role, origin: clientOrigin } = body as { email: string; role: UserRole; origin?: string }
 
     if (!email || !role) {
       return NextResponse.json({ error: 'Email and role are required' }, { status: 400 })
@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
     }
 
     const { protocol, host } = new URL(req.url)
-    const origin = `${protocol}//${host}`
+    const origin = clientOrigin || `${protocol}//${host}`
 
     // Send magic-link invite via Supabase Admin
     const { data, error } = await supabaseAdmin.auth.admin.inviteUserByEmail(email, {

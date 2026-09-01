@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
     }
 
     const { protocol, host } = new URL(req.url)
-    const origin = `${protocol}//${host}`
+    const origin = clientOrigin || `${protocol}//${host}`
 
     // For users who are already registered but didn't finish onboarding, 
     // sending a password recovery email serves as the perfect "Reset / Setup Account" link.

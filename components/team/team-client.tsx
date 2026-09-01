@@ -90,7 +90,7 @@ export function TeamClient({
       const res = await fetch('/api/team/invite', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: inviteEmail, role: inviteRole }),
+        body: JSON.stringify({ email: inviteEmail, role: inviteRole, origin: window.location.origin }),
       })
       const data = await res.json()
       if (!res.ok) {

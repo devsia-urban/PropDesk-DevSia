@@ -39,7 +39,7 @@ export async function updateAssociateStatus(id: string, status: 'approved' | 're
     .select()
     .single()
 
-  if (updateError) throw new Error(\`Failed to update status: \${updateError.message}\`)
+  if (updateError) throw new Error(`Failed to update status: ${updateError.message}`)
 
   // 2. If approved, optionally do something else (e.g. create a broker profile)
   // For now, we just update the status so the UI reflects it!
