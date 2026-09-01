@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Only admins can resend invites' }, { status: 403 })
     }
 
-    const { email } = await req.json()
+    const { email, origin: clientOrigin } = await req.json()
 
     if (!email) {
       return NextResponse.json({ error: 'Email is required' }, { status: 400 })

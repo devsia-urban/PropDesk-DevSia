@@ -28,11 +28,32 @@ interface ClientOption {
 
 export function BookingForm({ propertyId, propertyTitle, bookingType, onClose, unitId }: BookingFormProps) {
   const router = useRouter()
-  const { profile, user } = useAuth()
+  const { profile: authProfile, user } = useAuth()
+  const [profile, setProfile] = useState(authProfile)
+
+  useEffect(() => {
+    if (authProfile) {
+      setProfile(authProfile)
+    } else if (user) {
+      import('@/lib/supabase/client').then(({ createClient }) => {
+        const supabase = createClient()
+        supabase.from('profiles').select('*').eq('id', user.id).single().then(({ data }: { data: any }) => {
+          if (data) setProfile(data)
+        })
+      })
+    }
+  }, [authProfile, user])
   const [isPending, startTransition] = useTransition()
 
   // Agent details
   const [agentRera, setAgentRera] = useState(profile?.rera_number || '')
+
+  // Update RERA number if profile is fetched asynchronously
+  useEffect(() => {
+    if (profile?.rera_number) {
+      setAgentRera(profile.rera_number)
+    }
+  }, [profile?.rera_number])
 
   // Client linking
   const [linkMode, setLinkMode] = useState<'search' | 'manual'>('search')
@@ -157,7 +178,6 @@ export function BookingForm({ propertyId, propertyTitle, bookingType, onClose, u
         <form onSubmit={handleSubmit} className="p-6 space-y-5">
           {/* Agent Details (Pre-filled) */}
           <div className="space-y-3">
-            <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Agent Details</p>
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <Label className="text-xs font-semibold text-slate-500">Name</Label>
@@ -165,7 +185,7 @@ export function BookingForm({ propertyId, propertyTitle, bookingType, onClose, u
               </div>
               <div>
                 <Label className="text-xs font-semibold text-slate-500">Phone</Label>
-                <Input value={profile?.phone || user?.user_metadata?.phone || 'Not set'} disabled className="bg-slate-50 border-slate-100 text-slate-600 font-medium text-sm h-10 rounded-xl mt-1" />
+                <Input value={profile?.phone || user?.phone || user?.user_metadata?.phone || 'Not set'} disabled className="bg-slate-50 border-slate-100 text-slate-600 font-medium text-sm h-10 rounded-xl mt-1" />
               </div>
             </div>
             <div>
