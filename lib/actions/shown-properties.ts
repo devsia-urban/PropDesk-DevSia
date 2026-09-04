@@ -7,6 +7,9 @@ import { revalidatePath } from 'next/cache'
 export type ShownProperty = {
   id: string
   created_at: string
+  notes: string | null
+  external_title: string | null
+  external_location: string | null
   client_id: string
   property: {
     id: string
@@ -29,7 +32,10 @@ export async function getShownProperties(clientId: string) {
     .select(`
       id,
       created_at,
+      notes,
       client_id,
+      external_title,
+      external_location,
       property:properties(id, title, price, locality, city, property_type, status, listing_type, cover_image_url)
     `)
     .eq('client_id', clientId)
@@ -63,9 +69,12 @@ export async function linkShownProperty(params: {
         .insert({
       agency_id: profile.agency_id,
       client_id: clientId,
-      property_id: propertyId,
+      property_id: propertyId || null,
       agent_id: profile.id,
-      status: 'shown'
+      status: 'shown',
+      external_title: externalTitle || null,
+      external_location: externalLocation || null,
+      notes: notes || null
     })
     .select()
     .single()
