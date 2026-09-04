@@ -91,8 +91,8 @@ export function ShownPropertiesSection({ clientId }: ShownPropertiesSectionProps
           <div className="space-y-4">
             {shownProperties.map((record) => {
               const isExternal = !record.property
-              const title = isExternal ? record.external_title : record.property?.title
-              const location = isExternal ? record.external_location : (record.property?.locality || record.property?.city)
+              const title = isExternal ? "External Property" : record.property?.title
+              const location = isExternal ? "Unknown Location" : (record.property?.locality || record.property?.city)
               const price = isExternal ? null : record.property?.price
               const coverImage = isExternal ? null : record.property?.cover_image_url
 
@@ -168,14 +168,7 @@ export function ShownPropertiesSection({ clientId }: ShownPropertiesSectionProps
                     </div>
 
                     {/* Feedback/Notes */}
-                    {record.notes && (
-                      <div className="flex items-start gap-2 pt-2 group-hover:bg-transparent">
-                        <MessageSquare className="w-3 h-3 text-emerald-500 shrink-0 mt-1" />
-                        <p className="text-xs text-slate-600 italic leading-relaxed">
-                          &quot;{record.notes}&quot;
-                        </p>
-                      </div>
-                    )}
+
 
                     {/* Date Shown */}
                     <div className="flex items-center gap-1.5 pt-1 text-[10px] text-slate-400 font-bold uppercase tracking-widest">
