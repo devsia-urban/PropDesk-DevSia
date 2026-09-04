@@ -180,7 +180,7 @@ export function ShownPropertiesSection({ clientId }: ShownPropertiesSectionProps
                     {/* Date Shown */}
                     <div className="flex items-center gap-1.5 pt-1 text-[10px] text-slate-400 font-bold uppercase tracking-widest">
                       <Calendar className="w-3 h-3" />
-                      <span>Shown on {new Date(record.shown_at).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}</span>
+                      <span>Shown on {new Date(record.created_at).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}</span>
                     </div>
                   </div>
                 </div>

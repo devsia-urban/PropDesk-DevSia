@@ -6,11 +6,8 @@ import { revalidatePath } from 'next/cache'
 
 export type ShownProperty = {
   id: string
-  shown_at: string
-  notes: string | null
+  created_at: string
   client_id: string
-  external_title: string | null
-  external_location: string | null
   property: {
     id: string
     title: string 
@@ -31,15 +28,12 @@ export async function getShownProperties(clientId: string) {
     .from('client_shown_properties')
     .select(`
       id,
-      shown_at,
-      notes,
+      created_at,
       client_id,
-      external_title,
-      external_location,
       property:properties(id, title, price, locality, city, property_type, status, listing_type, cover_image_url)
     `)
     .eq('client_id', clientId)
-    .order('shown_at', { ascending: false })
+    .order('created_at', { ascending: false })
 
   if (error) {
     console.error("Error fetching shown properties:", error)
@@ -66,14 +60,12 @@ export async function linkShownProperty(params: {
 
   const { data, error } = await supabase
     .from('client_shown_properties')
-    .insert({
+        .insert({
       agency_id: profile.agency_id,
       client_id: clientId,
-      property_id: propertyId || null,
-      external_title: externalTitle || null,
-      external_location: externalLocation || null,
-      notes,
-      created_by: profile.id
+      property_id: propertyId,
+      agent_id: profile.id,
+      status: 'shown'
     })
     .select()
     .single()

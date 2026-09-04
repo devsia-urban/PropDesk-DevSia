@@ -8,6 +8,22 @@ import { CheckCircle2, ArrowRight, Loader2, Home, Key, Building, Map } from "luc
 type TransactionType = 'buy' | 'rent' | 'sell' | 'lease'
 type PropertyChip = '1 BHK' | '2 BHK' | '3 BHK' | '4+ BHK' | 'Villa' | 'Plot' | 'Commercial' | 'Farmhouse' | 'Farmer Land'
 
+
+function formatIndianNumberText(num: number | string): string {
+  if (!num) return ''
+  const val = Number(num)
+  if (isNaN(val) || val <= 0) return ''
+  
+  if (val >= 10000000) {
+    return (val / 10000000).toFixed(2).replace(/\.00$/, '') + ' Cr'
+  } else if (val >= 100000) {
+    return (val / 100000).toFixed(2).replace(/\.00$/, '') + ' Lacs'
+  } else if (val >= 1000) {
+    return (val / 1000).toFixed(2).replace(/\.00$/, '') + ' K'
+  }
+  return val.toString()
+}
+
 export function LeadForm({ agencyId, agencyName, agentId }: { agencyId: string, agencyName: string, agentId?: string | null }) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
@@ -15,6 +31,8 @@ export function LeadForm({ agencyId, agencyName, agentId }: { agencyId: string, 
 
   const [transaction, setTransaction] = useState<TransactionType>('buy')
   const [selectedTypes, setSelectedTypes] = useState<PropertyChip[]>([])
+  const [budgetMin, setBudgetMin] = useState('')
+  const [budgetMax, setBudgetMax] = useState('')
 
   const toggleType = (type: PropertyChip) => {
     setSelectedTypes(prev => 
@@ -169,23 +187,13 @@ export function LeadForm({ agencyId, agencyName, agentId }: { agencyId: string, 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <label className="text-xs font-black text-slate-400 uppercase tracking-widest">Min Budget (₹) <span className="text-red-500">*</span></label>
-              <input 
-                required
-                name="budget_min"
-                type="number" 
-                placeholder="E.g. 5000000"
-                className="w-full h-12 px-4 rounded-xl border border-slate-200 focus:border-slate-900 focus:ring-1 focus:ring-slate-900 transition-all font-medium text-slate-900 outline-none bg-slate-50/50"
-              />
+              <input required name="budget_min" type="number" value={budgetMin} onChange={(e) => setBudgetMin(e.target.value)} placeholder="E.g. 5000000" className="w-full h-12 px-4 rounded-xl border border-slate-200 focus:border-slate-900 focus:ring-1 focus:ring-slate-900 transition-all font-medium text-slate-900 outline-none bg-slate-50/50" />
+              {budgetMin && <p className="text-[10px] font-bold text-emerald-600 mt-1">{formatIndianNumberText(budgetMin)}</p>}
             </div>
             <div className="space-y-2">
               <label className="text-xs font-black text-slate-400 uppercase tracking-widest">Max Budget (₹) <span className="text-red-500">*</span></label>
-              <input 
-                required
-                name="budget_max"
-                type="number" 
-                placeholder="E.g. 10000000"
-                className="w-full h-12 px-4 rounded-xl border border-slate-200 focus:border-slate-900 focus:ring-1 focus:ring-slate-900 transition-all font-medium text-slate-900 outline-none bg-slate-50/50"
-              />
+              <input required name="budget_max" type="number" value={budgetMax} onChange={(e) => setBudgetMax(e.target.value)} placeholder="E.g. 10000000" className="w-full h-12 px-4 rounded-xl border border-slate-200 focus:border-slate-900 focus:ring-1 focus:ring-slate-900 transition-all font-medium text-slate-900 outline-none bg-slate-50/50" />
+              {budgetMax && <p className="text-[10px] font-bold text-emerald-600 mt-1">{formatIndianNumberText(budgetMax)}</p>}
             </div>
           </div>
           

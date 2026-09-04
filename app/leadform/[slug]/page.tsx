@@ -21,7 +21,7 @@ export default async function PublicLeadPage({
   // Use supabaseAdmin to bypass RLS and fetch public profile for ANY agency
   const { data: agency, error } = await supabaseAdmin
     .from('agencies')
-    .select('id, name, logo_url, address, contact_phone, website')
+    .select('id, name, address, contact_phone, website')
     .ilike('name', decodedName)
     .single()
 
@@ -36,11 +36,7 @@ export default async function PublicLeadPage({
         {/* Header Profile */}
         <div className="text-center space-y-4">
           <div className="w-24 h-24 rounded-[2rem] bg-white border border-slate-100 flex items-center justify-center shadow-sm mx-auto p-4">
-            {agency.logo_url ? (
-              <img src={agency.logo_url} alt={agency.name} className="w-full h-full object-contain" />
-            ) : (
-              <Building2 className="w-10 h-10 text-slate-300" />
-            )}
+            <img src="/DevSia.png" alt="DevSia" className="w-full h-full object-contain" />
           </div>
           <div>
             <h1 className="text-3xl font-black text-slate-900 tracking-tight">{agency.name}</h1>
