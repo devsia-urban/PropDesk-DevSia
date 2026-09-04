@@ -44,7 +44,9 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
   useFollowUpScheduler(profile?.id)
 
   const { notifications, setNotifications, unreadCount, markRead, markAllRead } =
-    useRealtimeNotifications(profile?.id, [], 0)
+    useRealtimeNotifications(profile?.id, [], 0, (newNotif) => {
+      setCurrentPopup(newNotif)
+    })
   const [isSubscribed, setIsSubscribed] = useState(false)
   const [isSyncing, setIsSyncing] = useState(false)
   const [currentPopup, setCurrentPopup] = useState<Notification | null>(null)

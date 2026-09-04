@@ -20,7 +20,8 @@ import {
 export function useRealtimeNotifications(
   userId: string | undefined,
   initialNotifications: Notification[] = [],
-  initialUnread: number = 0
+  initialUnread: number = 0,
+  onNewNotification?: (notification: Notification) => void
 ) {
   const [notifications, setNotifications] = useState<Notification[]>(initialNotifications)
   const [unreadCount, setUnreadCount] = useState(initialUnread)
@@ -41,6 +42,7 @@ export function useRealtimeNotifications(
         },
         (payload: RealtimePostgresInsertPayload<Notification>) => {
           const newNotif = payload.new
+          if (onNewNotification) onNewNotification(newNotif)
           setNotifications(prev => [newNotif, ...prev])
           setUnreadCount(prev => prev + 1)
         }
