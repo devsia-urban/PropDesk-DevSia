@@ -25,26 +25,18 @@ export default async function PublicAssociatePage({
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 relative overflow-x-hidden">
-      {/* Decorative background elements */}
-      <div className="absolute top-[-10%] right-[-5%] w-[50%] h-[50%] rounded-full bg-emerald-100/40 blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[-10%] left-[-5%] w-[40%] h-[40%] rounded-full bg-blue-100/40 blur-[120px] pointer-events-none" />
+    <div className="min-h-screen bg-slate-50 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-50 via-emerald-50/20 to-slate-100 relative overflow-x-hidden selection:bg-emerald-100 selection:text-emerald-900">
+      
 
       {/* Header */}
       <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-200/50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            {agency.logo_url ? (
-              <img 
-                src={agency.logo_url} 
-                alt={agency.name} 
-                className="h-12 w-auto object-contain rounded-lg border border-slate-100 shadow-sm"
-              />
-            ) : (
-              <div className="h-12 w-12 rounded-lg bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 font-bold text-xl shadow-sm">
-                {agency.name.charAt(0)}
-              </div>
-            )}
+            <img
+              src={agency.logo_url || "/DevSia.png"}
+              alt={agency.name}
+              className="h-14 w-auto rounded-xl object-contain drop-shadow-sm transition-transform hover:scale-105"
+            />
             <div>
               <h1 className="text-xl font-bold text-slate-900 tracking-tight">{agency.name}</h1>
               <p className="text-sm font-medium text-slate-500">Associate Application</p>
@@ -59,7 +51,7 @@ export default async function PublicAssociatePage({
       </main>
 
       {/* Footer */}
-      <footer className="mt-20 py-8 border-t border-slate-200/50 bg-white/50 backdrop-blur-sm text-center">
+      <footer className="mt-12 py-8 bg-transparent text-center">
         <p className="text-sm font-medium text-slate-400">
           Powered by <span className="text-slate-600 font-bold tracking-tight">DevSia</span>
         </p>

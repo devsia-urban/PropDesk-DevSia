@@ -1,10 +1,12 @@
 export const dynamic = "force-dynamic";
 import React from 'react'
 import { getProfile } from '@/lib/auth/get-session'
+import { getAgency } from '@/lib/actions/agency'
 import { AssociatesClient } from '@/components/associates/associates-client'
 
 export default async function AssociatesPage() {
   const profile = await getProfile()
+  const agency = await getAgency()
   
   if (!profile || profile.role !== 'admin') {
     return (
@@ -17,5 +19,5 @@ export default async function AssociatesPage() {
     )
   }
 
-  return <AssociatesClient agencyId={profile.agency_id!} />
+  return <AssociatesClient agencyId={profile.agency_id!} agencyName={agency?.name || ''} />
 }

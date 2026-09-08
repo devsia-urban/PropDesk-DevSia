@@ -2,16 +2,24 @@
 
 import React from 'react'
 import { Card } from '@/components/ui/card'
-import { MapPin, Phone, Briefcase, Mail, CheckCircle, XCircle } from 'lucide-react'
+import { MapPin, Phone, Briefcase, Mail, CheckCircle, XCircle, Link as LinkIcon, Copy } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
 import useSWR from 'swr'
 import { getAssociates, updateAssociateStatus } from '@/lib/actions/associates'
 import { toast } from 'sonner'
 import { Skeleton } from '@/components/ui/skeleton'
 
-export function AssociatesClient({ agencyId }: { agencyId: string }) {
+export function AssociatesClient({ agencyId, agencyName }: { agencyId: string, agencyName: string }) {
   const { data: applications, isLoading, error, mutate } = useSWR('associates', () => getAssociates())
   const [isUpdating, setIsUpdating] = React.useState<string | null>(null)
+
+  
+  const copyLink = () => {
+    const slug = agencyName.toLowerCase().replace(/\s+/g, '-');
+    const url = `${window.location.origin}/associateform/${slug}`;
+    navigator.clipboard.writeText(url);
+    toast.success("Link copied!", { description: "You can now paste it in your bio." });
+  };
 
   const handleUpdateStatus = async (id: string, status: 'approved' | 'rejected') => {
     try {
@@ -28,10 +36,19 @@ export function AssociatesClient({ agencyId }: { agencyId: string }) {
 
   return (
     <div className="space-y-6 pb-20">
+      <div className="flex items-center justify-between">
       <div>
         <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Associate Applications</h1>
         <p className="text-sm text-slate-500 font-medium">Review candidates who applied via your website</p>
       </div>
+      <button 
+        onClick={copyLink}
+        className="flex items-center gap-2 px-4 py-2 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 font-bold rounded-xl transition-all shadow-sm ring-1 ring-emerald-200"
+      >
+        <LinkIcon className="w-4 h-4" />
+        Copy Form Link
+      </button>
+    </div>
 
       <div className="relative">
         {isLoading && (

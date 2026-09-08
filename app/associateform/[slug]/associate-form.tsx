@@ -117,10 +117,11 @@ export function AssociateForm({ agencyId, agencyName }: { agencyId: string, agen
   }
 
   return (
-    <Card className="border-0 shadow-2xl shadow-slate-200/50 rounded-3xl overflow-hidden bg-white/80 backdrop-blur-xl">
-      <CardHeader className="bg-slate-900 text-white p-8 sm:p-10">
-        <CardTitle className="text-2xl sm:text-3xl font-playfair tracking-tight">Become an Associate</CardTitle>
-        <CardDescription className="text-slate-300 text-base">
+    <Card className="border border-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-[2rem] overflow-hidden bg-white">
+      <CardHeader className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white p-8 sm:p-12 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
+        <CardTitle className="text-3xl sm:text-4xl font-playfair font-semibold tracking-tight relative z-10">Become an Associate</CardTitle>
+        <CardDescription className="text-slate-300 text-lg mt-2 relative z-10">
           Fill out the details below to apply and join our real estate network.
         </CardDescription>
       </CardHeader>
@@ -243,7 +244,7 @@ export function AssociateForm({ agencyId, agencyName }: { agencyId: string, agen
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="w-full h-14 text-lg font-bold bg-slate-900 hover:bg-slate-800 text-white rounded-2xl transition-all shadow-lg shadow-slate-900/20 active:scale-[0.98]"
+            className="w-full h-14 text-lg font-bold bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white rounded-2xl transition-all shadow-xl shadow-emerald-500/20 active:scale-[0.98] hover:-translate-y-0.5"
           >
             {isSubmitting ? (
               <span className="flex items-center gap-2">
