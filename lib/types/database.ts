@@ -337,6 +337,7 @@ export interface AssociateApplication {
   preferred_working_location: string | null
   current_occupation: string | null
   works_with_other_company: boolean
+  other_company_name: string | null
   deals_closed_last_year: string | null
   status: 'pending' | 'reviewed' | 'approved' | 'rejected'
   created_at: string
