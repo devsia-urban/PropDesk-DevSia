@@ -44,11 +44,15 @@ type FormValues = z.infer<typeof formSchema>
 export function AssociateForm({ agencyId, agencyName }: { agencyId: string, agencyName: string }) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
+  const [hasApplied, setHasApplied] = useState(false)
   const [windowSize, setWindowSize] = useState({ width: 0, height: 0 })
 
   React.useEffect(() => {
     setWindowSize({ width: window.innerWidth, height: window.innerHeight })
-  }, [])
+    if (localStorage.getItem(`associate_applied_${agencyId}`)) {
+      setHasApplied(true)
+    }
+  }, [agencyId])
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -98,7 +102,22 @@ export function AssociateForm({ agencyId, agencyName }: { agencyId: string, agen
       alert(res.error)
     } else {
       setIsSuccess(true)
+      localStorage.setItem(`associate_applied_${agencyId}`, "true")
     }
+  }
+
+  if (hasApplied) {
+    return (
+      <div className="text-center py-16 animate-in zoom-in-95 duration-500">
+        <div className="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl shadow-blue-100/50">
+          <CheckCircle2 className="w-12 h-12 text-blue-600" />
+        </div>
+        <h2 className="text-3xl font-bold text-slate-900 mb-4">Already Applied</h2>
+        <p className="text-lg text-slate-600 max-w-md mx-auto">
+          You have already submitted an application to <strong>{agencyName}</strong> from this device. We will get back to you soon!
+        </p>
+      </div>
+    )
   }
 
   if (isSuccess) {

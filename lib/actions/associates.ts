@@ -51,7 +51,21 @@ export async function updateAssociateStatus(id: string, status: 'approved' | 're
 }
 
 export async function submitAssociateApplication(formData: any) {
+  
+  // Check for duplicate mobile number
+  const { data: existingApp } = await supabaseAdmin
+    .from('associate_applications')
+    .select('id')
+    .eq('agency_id', formData.agency_id)
+    .eq('mobile_number', formData.mobile_number)
+    .single()
+
+  if (existingApp) {
+    return { error: 'An application with this mobile number has already been submitted.' }
+  }
+
   // Use supabaseAdmin to bypass RLS since the user is not authenticated
+
   const { data: app, error } = await supabaseAdmin
     .from('associate_applications')
     .insert({
