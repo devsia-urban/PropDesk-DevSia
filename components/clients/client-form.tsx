@@ -180,7 +180,8 @@ export function ClientForm({ initialData, mode = "add" }: ClientFormProps) {
   // Fetch real team members
   useEffect(() => {
     getTeamMembers().then(members => {
-      setTeamMembers(members as TeamMember[])
+      let sorted = (members as TeamMember[]).sort((a, b) => a.full_name.localeCompare(b.full_name));
+      setTeamMembers(sorted);
     })
   }, [])
 
@@ -732,7 +733,7 @@ export function ClientForm({ initialData, mode = "add" }: ClientFormProps) {
                 </SelectTrigger>
                 <SelectContent className="bg-white">
                   {teamMembers.length > 0 ? (
-                    teamMembers.map(m => (
+                    (profile?.role === "agent" ? teamMembers.filter(m => m.id === profile?.id) : teamMembers).map(m => (
                       <SelectItem key={m.id} value={m.id}>
                         {m.full_name} {m.role === "admin" ? "(Admin)" : ""}
                       </SelectItem>
