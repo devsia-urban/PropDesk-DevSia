@@ -24,6 +24,7 @@ import {
   User2
 } from "lucide-react"
 import { useRouter } from "next/navigation"
+import { useAuth } from "@/lib/context/auth-context"
 import { toast } from "sonner"
 import { format } from "date-fns"
 import { useSearchParams } from "next/navigation"
@@ -88,6 +89,7 @@ const BHK_OPTIONS = [0, 1, 2, 3, 4, 5]
 
 export function ClientForm({ initialData, mode = "add" }: ClientFormProps) {
   const router = useRouter()
+  const { profile } = useAuth()
   const searchParams = useSearchParams()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isMatching, setIsMatching] = useState(false)
@@ -105,7 +107,7 @@ export function ClientForm({ initialData, mode = "add" }: ClientFormProps) {
     }
   }, [])
 
-  const form = useForm<ClientFormValues>({
+    const form = useForm<ClientFormValues>({
     resolver: zodResolver(ClientFormSchema),
     defaultValues: {
       full_name: initialData?.full_name || "",
@@ -143,6 +145,12 @@ export function ClientForm({ initialData, mode = "add" }: ClientFormProps) {
     watch,
     formState: { errors, isDirty },
   } = form
+
+  useEffect(() => {
+    if (profile && profile.role === "agent" && !initialData?.assigned_to) {
+      setValue("assigned_to", profile.id)
+    }
+  }, [profile, setValue, initialData])
 
   const handleAddCustomSource = (e?: React.MouseEvent | React.KeyboardEvent) => {
     if (e) e.preventDefault()
@@ -712,9 +720,15 @@ export function ClientForm({ initialData, mode = "add" }: ClientFormProps) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {/* Assigned To */}
             <FieldGroup label="Assigned to">
-              <Select onValueChange={(v) => setValue("assigned_to", v ?? undefined)} value={assignedTo}>
-                <SelectTrigger className="p-5 w-full rounded-xl bg-white border-slate-200">
-                  <SelectValue placeholder="Select team member" />
+              <Select 
+                onValueChange={(v) => setValue("assigned_to", v ?? undefined)} 
+                value={assignedTo}
+                disabled={profile?.role === "agent"}
+              >
+                <SelectTrigger className="p-5 w-full rounded-xl bg-white border-slate-200 disabled:opacity-50 disabled:cursor-not-allowed">
+                  <SelectValue placeholder="Select team member">
+                    {teamMembers.find(m => m.id === assignedTo)?.full_name || "Select team member"}
+                  </SelectValue>
                 </SelectTrigger>
                 <SelectContent className="bg-white">
                   {teamMembers.length > 0 ? (
