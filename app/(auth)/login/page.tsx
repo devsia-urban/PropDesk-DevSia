@@ -60,6 +60,18 @@ function LoginForm() {
     fetchBranding()
   }, [])
 
+  
+  // Check for invite or recovery hash
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const hash = window.location.hash;
+      if (hash && (hash.includes('type=invite') || hash.includes('type=recovery'))) {
+        router.push('/reset-password' + hash);
+      }
+    }
+  }, [router]);
+
+
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {

@@ -34,7 +34,7 @@ import { Profile, UserRole, Agency } from "@/lib/types/database"
 import { updateMemberRole, deactivateMember, removeMember } from "@/lib/actions/team"
 import { formatRelativeTime } from "@/lib/utils/format"
 import { RelativeTime } from "@/components/ui/relative-time"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { useAuth } from "@/lib/context/auth-context"
 import { getAgency } from "@/lib/actions/agency"
 
@@ -56,14 +56,16 @@ export function TeamClient({
   agency: Agency
 }) {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const { isReadOnly } = useAuth()
   
-  const { data, isLoading, error, mutate } = useSWR('team-members', () => getTeamMembers(1))
+  const currentPage = parseInt(searchParams.get('page') || '1', 10)
+  
+  const { data, isLoading, error, mutate } = useSWR(['team-members', currentPage], () => getTeamMembers(currentPage))
   
   const members = data?.data || []
   const totalCount = data?.count || 0
   const totalPages = data?.totalPages || 0
-  const currentPage = 1
 
   const [isInviteOpen, setIsInviteOpen] = useState(false)
   const [isRoleOpen, setIsRoleOpen] = useState(false)
