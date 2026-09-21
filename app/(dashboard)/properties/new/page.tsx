@@ -4,7 +4,12 @@ import Link from "next/link"
 import { ChevronLeft, Loader2 } from "lucide-react"
 import { PropertyForm } from "@/components/properties/property-form"
 
-export default function NewPropertyPage() {
+import { getProfile } from "@/lib/auth/get-session"
+
+export default async function NewPropertyPage() {
+  const profile = await getProfile()
+  const isAdmin = profile?.role === 'admin' || profile?.is_super_admin
+
   return (
     <div className="max-w-6xl mx-auto space-y-8 pb-20">
       {/* Header */}
@@ -30,7 +35,7 @@ export default function NewPropertyPage() {
           <p className="text-sm text-slate-500 font-medium font-sans">Preparing property form...</p>
         </div>
       }>
-        <PropertyForm />
+        <PropertyForm isAdmin={isAdmin} />
       </Suspense>
     </div>
   )

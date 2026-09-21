@@ -64,6 +64,7 @@ import { formatBudget } from "@/lib/utils/format"
 interface PropertyFormProps {
   initialData?: Partial<PropertyFormValues> & { id?: string }
   mode?: "add" | "edit"
+  isAdmin?: boolean
 }
 
 const DEFAULT_AMENITIES = [
@@ -78,7 +79,7 @@ const DEFAULT_PLOT_GROUPS = ["JDA Scheme", "Gated Society", "JDA Patta", "Societ
 
 const FACING_OPTIONS = ["North", "South", "East", "West", "North-East", "North-West", "South-East", "South-West"]
 
-export function PropertyForm({ initialData, mode = "add" }: PropertyFormProps) {
+export function PropertyForm({ initialData, mode = "add", isAdmin = false }: PropertyFormProps) {
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const searchParams = useSearchParams()
@@ -161,6 +162,7 @@ export function PropertyForm({ initialData, mode = "add" }: PropertyFormProps) {
     video_url: initialData?.video_url || "",
     source_broker_id: initialData?.source_broker_id || (mode === "add" ? searchParams.get("source_broker_id") || "" : ""),
     contact_type: (initialData?.contact_type || (mode === "add" ? searchParams.get("contact_type") || "client" : "client")) as any,
+    is_admin_exclusive: initialData?.is_admin_exclusive ?? false,
   }
 
   const form = useForm<PropertyFormValues>({
@@ -191,6 +193,7 @@ export function PropertyForm({ initialData, mode = "add" }: PropertyFormProps) {
   const coverImageUrl = watch("cover_image_url")
   const isFeatured = watch("is_featured")
   const isNew = watch("is_new")
+  const isAdminExclusive = watch("is_admin_exclusive")
   const selectedAmenities = watch("amenities") || []
   const bhkValues = watch("bhk") || []
   const groupValue = (watch as any)("group")
@@ -1017,6 +1020,21 @@ export function PropertyForm({ initialData, mode = "add" }: PropertyFormProps) {
                   </div>
                   <Switch checked={isNew} onCheckedChange={(c) => setValue("is_new", c, { shouldDirty: true })} />
                 </div>
+
+                {isAdmin && (
+                  <div className="flex items-center justify-between p-3 rounded-xl bg-purple-50 border border-purple-100">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center">
+                        <ShieldCheck className="w-4 h-4 text-purple-500" />
+                      </div>
+                      <div className="space-y-0.5">
+                        <Label className="text-sm font-bold text-purple-900">Admin Exclusive</Label>
+                        <p className="text-[10px] text-purple-500">Hide from regular team members</p>
+                      </div>
+                    </div>
+                    <Switch checked={isAdminExclusive} onCheckedChange={(c) => setValue("is_admin_exclusive", c, { shouldDirty: true })} />
+                  </div>
+                )}
               </div>
             </Section>
 

@@ -5,10 +5,13 @@ import { notFound } from "next/navigation"
 import { ChevronLeft, Clock } from "lucide-react"
 import { PropertyForm } from "@/components/properties/property-form"
 import { getProperty } from "@/lib/actions/properties"
+import { getProfile } from "@/lib/auth/get-session"
 
 export default async function EditPropertyPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   const property = await getProperty(id)
+  const profile = await getProfile()
+  const isAdmin = profile?.role === 'admin' || profile?.is_super_admin
 
   if (!property) {
     notFound()
@@ -36,7 +39,7 @@ export default async function EditPropertyPage({ params }: { params: Promise<{ i
       </div>
 
       {/* Form */}
-      <PropertyForm initialData={property as any} mode="edit" />
+      <PropertyForm initialData={property as any} mode="edit" isAdmin={isAdmin} />
     </div>
   )
 }

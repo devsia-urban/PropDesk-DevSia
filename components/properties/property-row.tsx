@@ -9,7 +9,8 @@ import {
   Maximize2,
   MapPin,
   Building2,
-  Activity
+  Activity,
+  ShieldCheck
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
@@ -106,11 +107,19 @@ export function PropertyRow({ property, isSelected, onSelect, onDelete }: Proper
 
           </div>
           <div className="flex flex-col min-w-0">
-            <span className="font-medium text-slate-800 truncate max-w-[210px]">{property.title}</span>
+            <div className="flex items-center gap-2">
+              <span className="font-medium text-slate-800 truncate max-w-[210px]">{property.title}</span>
+            </div>
             <div className="flex items-center gap-1 text-[10px] text-slate-400 font-medium line-clamp-1  max-w-[210px]">
               <MapPin className="w-2.5 h-2.5" />
               <span>{property.locality}</span>
             </div>
+            {property.is_admin_exclusive && (
+              <Badge className="bg-purple-100 text-purple-700 hover:bg-purple-100 border-none px-1 py-0 uppercase text-[8px] font-black w-fit mt-1 gap-1">
+                <ShieldCheck className="w-2.5 h-2.5" />
+                Admin
+              </Badge>
+            )}
           </div>
 
         </div>

@@ -74,7 +74,10 @@ export async function createProperty(formData: PropertyFormValues) {
     profile.agency_id
   )
 
-  const { source_broker_id, ...propertyData } = formData
+  const { source_broker_id, is_admin_exclusive, ...propertyData } = formData
+  
+  // Only admins can set is_admin_exclusive
+  const finalIsAdminExclusive = (profile.role === 'admin' || profile.is_super_admin) ? (is_admin_exclusive || false) : false
 
   const { data, error } = await supabase
     .from('properties')
@@ -83,6 +86,7 @@ export async function createProperty(formData: PropertyFormValues) {
       slug: uniqueSlug,
       agency_id: profile.agency_id,
       created_by: profile.id,
+      is_admin_exclusive: finalIsAdminExclusive,
     })
     .select()
     .single()
@@ -136,11 +140,18 @@ export async function updateProperty(id: string, formData: Partial<PropertyFormV
     throw new Error("User must belong to an agency to update properties")
   }
 
-  const { source_broker_id, ...propertyData } = formData
+  const { source_broker_id, is_admin_exclusive, ...propertyData } = formData
+  
+  const updatePayload: any = { ...propertyData }
+  if (profile.role === 'admin' || profile.is_super_admin) {
+    if (is_admin_exclusive !== undefined) {
+      updatePayload.is_admin_exclusive = is_admin_exclusive
+    }
+  }
 
   const { data, error } = await supabase
     .from('properties')
-    .update(propertyData)
+    .update(updatePayload)
     .match({ id, agency_id: profile.agency_id })
     .select()
     .single()
@@ -258,7 +269,7 @@ export async function getProperty(id: string) {
   const supabase = await createClient()
   const profile = await requireProfile()
 
-  const { data, error } = await supabase
+  let query = supabase
     .from('properties')
     .select(`
       *, 
@@ -270,7 +281,12 @@ export async function getProperty(id: string) {
     `)
     .eq('id', id)
     .eq('agency_id', profile.agency_id)
-    .single()
+
+  if (profile.role !== 'admin' && !profile.is_super_admin) {
+    query = query.eq('is_admin_exclusive', false)
+  }
+
+  const { data, error } = await query.single()
 
   if (error) return null
   return data as PropertyWithCreator
@@ -288,9 +304,17 @@ export async function getProperties(filters: PropertyFilters) {
   // 1. Core query with count enabled
   let query = supabase
     .from('properties')
-    .select('id, title, price, property_type, status, listing_type, city, locality, cover_image_url, is_featured, is_new, bedrooms, bathrooms, area_sqft, bhk, created_at, approval_type, area_unit, profiles:profiles!properties_created_by_fkey(full_name)', { count: 'exact' })
+    .select('id, title, price, property_type, status, listing_type, city, locality, cover_image_url, is_featured, is_new, bedrooms, bathrooms, area_sqft, bhk, created_at, approval_type, area_unit, is_admin_exclusive, profiles:profiles!properties_created_by_fkey(full_name)', { count: 'exact' })
     .eq('agency_id', profile.agency_id)
     .eq('is_deleted', false)
+
+  if (profile.role !== 'admin' && !profile.is_super_admin) {
+    query = query.eq('is_admin_exclusive', false)
+  } else {
+    if (filters.is_admin_exclusive && filters.is_admin_exclusive !== 'all' && filters.is_admin_exclusive !== 'any') {
+      query = query.eq('is_admin_exclusive', filters.is_admin_exclusive === 'true' || filters.is_admin_exclusive === true)
+    }
+  }
 
   // 2. Apply all filters BEFORE range/order for accurate counting
   if (filters.search) {
@@ -386,6 +410,7 @@ export async function getPublicProperty(slug: string) {
     `)
     .eq('slug', slug)
     .eq('is_deleted', false)
+    .eq('is_admin_exclusive', false)
     .single()
 
   if (error) {

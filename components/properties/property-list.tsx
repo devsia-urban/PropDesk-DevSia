@@ -59,7 +59,7 @@ function formatBudgetLabel(val: string) {
   return map[val] || "Budget"
 }
 
-export function PropertyList({ initialData }: { initialData?: any }) {
+export function PropertyList({ initialData, isAdmin = false }: { initialData?: any, isAdmin?: boolean }) {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [viewMode, setViewMode] = useState<"grid" | "list">("list")
@@ -81,6 +81,7 @@ export function PropertyList({ initialData }: { initialData?: any }) {
   const [listingTypeFilter, setListingTypeFilter] = useState(searchParams.get("listing_type") || "any")
   const [approvalFilter, setApprovalFilter] = useState(searchParams.get("approval_type") || "any")
   const [bedroomsFilter, setBedroomsFilter] = useState(searchParams.get("bhk") || "any")
+  const [adminExclusiveFilter, setAdminExclusiveFilter] = useState(searchParams.get("is_admin_exclusive") || "any")
   const [budgetFilter, setBudgetFilter] = useState(() => {
     const min = searchParams.get("price_min")
     const max = searchParams.get("price_max")
@@ -113,6 +114,9 @@ export function PropertyList({ initialData }: { initialData?: any }) {
     if (bedroomsFilter !== "any") params.set("bhk", bedroomsFilter)
     else params.delete("bhk")
 
+    if (adminExclusiveFilter !== "any") params.set("is_admin_exclusive", adminExclusiveFilter)
+    else params.delete("is_admin_exclusive")
+
     if (budgetFilter !== "any") {
       const [min, max] = budgetFilter.split('-')
       if (min !== '0') params.set("price_min", min)
@@ -133,6 +137,7 @@ export function PropertyList({ initialData }: { initialData?: any }) {
       listingTypeFilter !== (searchParams.get("listing_type") || "any") ||
       approvalFilter !== (searchParams.get("approval_type") || "any") ||
       bedroomsFilter !== (searchParams.get("bhk") || "any") ||
+      adminExclusiveFilter !== (searchParams.get("is_admin_exclusive") || "any") ||
       budgetFilter !== (() => {
         const min = searchParams.get("price_min")
         const max = searchParams.get("price_max")
@@ -145,7 +150,7 @@ export function PropertyList({ initialData }: { initialData?: any }) {
     }
 
     router.push(`/properties?${params.toString()}`, { scroll: false })
-  }, [debouncedSearch, typeFilter, statusFilter, listingTypeFilter, approvalFilter, bedroomsFilter, budgetFilter])
+  }, [debouncedSearch, typeFilter, statusFilter, listingTypeFilter, approvalFilter, bedroomsFilter, adminExclusiveFilter, budgetFilter])
 
   const filtersKey = {
     search: debouncedSearch,
@@ -154,6 +159,7 @@ export function PropertyList({ initialData }: { initialData?: any }) {
     listing_type: listingTypeFilter,
     approval_type: approvalFilter,
     bhk: bedroomsFilter,
+    is_admin_exclusive: adminExclusiveFilter,
     price_min: budgetFilter !== "any" && budgetFilter.split('-')[0] !== '0' ? parseInt(budgetFilter.split('-')[0]) : undefined,
     price_max: budgetFilter !== "any" && budgetFilter.split('-')[1] !== 'any' ? parseInt(budgetFilter.split('-')[1]) : undefined,
     page: currentPage,
@@ -173,7 +179,7 @@ export function PropertyList({ initialData }: { initialData?: any }) {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
   const [propertyToDelete, setPropertyToDelete] = useState<string | null>(null)
 
-  const hasActiveFilters = searchValue || typeFilter !== "any" || statusFilter !== "available" || listingTypeFilter !== "any" || approvalFilter !== "any" || bedroomsFilter !== "any" || budgetFilter !== "any"
+  const hasActiveFilters = searchValue || typeFilter !== "any" || statusFilter !== "available" || listingTypeFilter !== "any" || approvalFilter !== "any" || bedroomsFilter !== "any" || adminExclusiveFilter !== "any" || budgetFilter !== "any"
 
   const resetFilters = () => {
     setSearchValue("")
@@ -182,6 +188,7 @@ export function PropertyList({ initialData }: { initialData?: any }) {
     setListingTypeFilter("any")
     setApprovalFilter("any")
     setBedroomsFilter("any")
+    setAdminExclusiveFilter("any")
     setBudgetFilter("any")
   }
 
@@ -252,6 +259,7 @@ export function PropertyList({ initialData }: { initialData?: any }) {
       'Amenities': (p.amenities || []).join(', '),
       'Is Featured': p.is_featured ? 'Yes' : 'No',
       'Is New': p.is_new ? 'Yes' : 'No',
+      'Is Admin Exclusive': p.is_admin_exclusive ? 'Yes' : 'No',
       'Facing': p.facing || 'N/A',
       'Furnishing': p.furnishing || 'N/A',
       'Parking': p.parking || 'N/A',
@@ -484,6 +492,25 @@ export function PropertyList({ initialData }: { initialData?: any }) {
               <SelectItem value="5" className="font-medium">5+ BHK</SelectItem>
             </SelectContent>
           </Select>
+
+          {isAdmin && (
+            <Select onValueChange={v => setAdminExclusiveFilter(v ?? "any")} value={adminExclusiveFilter}>
+              <SelectTrigger className={cn(
+                "h-10 px-4 text-xs font-bold rounded-xl transition-all border-none",
+                adminExclusiveFilter !== "any" ? "bg-purple-100 text-purple-700" : "bg-purple-100 text-purple-700 hover:bg-slate-200"
+              )}>
+                <SelectValue>
+                  {adminExclusiveFilter === "any" ? "Visibility" :
+                    adminExclusiveFilter === "true" ? "Admin Exclusive" : "Public"}
+                </SelectValue>
+              </SelectTrigger>
+              <SelectContent className="bg-white">
+                <SelectItem value="any" className="font-medium">All Visibility</SelectItem>
+                <SelectItem value="true" className="font-medium text-purple-600">Admin Exclusive Only</SelectItem>
+                <SelectItem value="false" className="font-medium text-slate-600">Public Only</SelectItem>
+              </SelectContent>
+            </Select>
+          )}
 
           {hasActiveFilters && (
             <button

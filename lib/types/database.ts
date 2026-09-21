@@ -187,6 +187,7 @@ export interface Property {
   balconies: number | null
   google_maps_url: string | null
   video_url: string | null
+  is_admin_exclusive: boolean
   created_at: string
   updated_at: string
 }

@@ -18,6 +18,7 @@ interface PropertiesPageProps {
     bhk?: string
     price_min?: string
     price_max?: string
+    is_admin_exclusive?: string
     page?: string
   }>
 }
@@ -25,6 +26,8 @@ interface PropertiesPageProps {
 export default async function PropertiesPage(props: PropertiesPageProps) {
   const profile = await getProfile()
   const isReadOnly = profile?.subscription_status === 'paused' && !profile?.is_super_admin
+  const isAdmin = profile?.role === 'admin' || profile?.is_super_admin
+  const searchParams = await props.searchParams
   
   // Default empty filters for server-side prefetch
   const filtersKey = {
@@ -36,6 +39,7 @@ export default async function PropertiesPage(props: PropertiesPageProps) {
     bhk: 'any',
     price_min: undefined,
     price_max: undefined,
+    is_admin_exclusive: searchParams.is_admin_exclusive,
     page: 1,
   }
   const initialData = await getProperties(filtersKey)
@@ -61,7 +65,7 @@ export default async function PropertiesPage(props: PropertiesPageProps) {
         )}
       </div>
 
-      <PropertyList initialData={initialData} />
+      <PropertyList initialData={initialData} isAdmin={isAdmin} />
     </div>
   )
 }

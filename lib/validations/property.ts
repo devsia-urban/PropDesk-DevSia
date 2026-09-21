@@ -64,6 +64,7 @@ export const PropertyFormSchema = z.object({
   video_url: z.string().url("Must be a valid URL").optional().nullable().or(z.literal("")),
   source_broker_id: z.string().optional().nullable(),
   seller_client_id: z.string().optional().nullable(),
+  is_admin_exclusive: z.boolean().default(false).optional(),
 })
 
 export type PropertyFormValues = z.infer<typeof PropertyFormSchema>
@@ -77,5 +78,6 @@ export type PropertyFilters = {
   bhk?: string | number[]
   price_min?: number
   price_max?: number
+  is_admin_exclusive?: boolean | string
   page?: number
 }

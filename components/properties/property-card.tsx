@@ -12,7 +12,8 @@ import {
   Pencil,
   Loader2,
   Star,
-  Zap
+  Zap,
+  ShieldCheck
 } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
@@ -99,6 +100,11 @@ export function PropertyCard({ property, viewMode }: PropertyCardProps) {
           {property.is_featured && (
             <div className="absolute top-1 right-1 bg-orange-400 p-0.5 rounded-md shadow-sm">
               <Star className="w-2.5 h-2.5 text-white fill-white" />
+            </div>
+          )}
+          {property.is_admin_exclusive && (
+            <div className="absolute bottom-1 right-1 bg-purple-500 p-0.5 rounded-md shadow-sm">
+              <ShieldCheck className="w-2.5 h-2.5 text-white" />
             </div>
           )}
         </div>
@@ -188,6 +194,12 @@ export function PropertyCard({ property, viewMode }: PropertyCardProps) {
         {property.is_featured && (
           <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm p-1.5 rounded-lg shadow-md border border-orange-100">
             <Star className="w-4 h-4 text-orange-500 fill-orange-500" />
+          </div>
+        )}
+        {property.is_admin_exclusive && (
+          <div className="absolute bottom-3 left-3 bg-purple-500/90 backdrop-blur-sm px-2 py-1 rounded-md shadow-md flex items-center gap-1">
+             <ShieldCheck className="w-3 h-3 text-white" />
+             <span className="text-[10px] font-black text-white uppercase tracking-wider">Admin Exclusive</span>
           </div>
         )}
       </div>
