@@ -47,7 +47,12 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
     useRealtimeNotifications(profile?.id, [], 0, (newNotif) => {
       setCurrentPopup(newNotif)
     })
-  const [isSubscribed, setIsSubscribed] = useState(false)
+  const [isSubscribed, setIsSubscribed] = useState(() => {
+    if (typeof window !== 'undefined' && 'Notification' in window) {
+      return window.Notification.permission === 'granted'
+    }
+    return false
+  })
   const [isSyncing, setIsSyncing] = useState(false)
   const [currentPopup, setCurrentPopup] = useState<Notification | null>(null)
   const lastCountRef = useRef(unreadCount)
@@ -187,8 +192,7 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
       }
     }
 
-    const timer = setTimeout(registerPush, 2000) // Delay sync to let page load finish
-    return () => clearTimeout(timer)
+    registerPush()
   }, [profile?.id])
 
   // 🔔 Automatic Permission Request on Login
