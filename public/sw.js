@@ -3,7 +3,7 @@
  * Handles background push notifications & offline caching for PWA.
  */
 
-const CACHE_NAME = 'propdesk-v2'
+const CACHE_NAME = 'DevSia'
 const OFFLINE_URL = '/dashboard'
 
 // ── Install: cache critical shell assets ──────────────────────────────────────
@@ -62,7 +62,6 @@ self.addEventListener('push', (event) => {
     const options = {
       body: data.body,
       icon: data.icon || '/icon-192.png',
-      badge: '/icon-192.png',
       data: {
         url: data.url || '/dashboard'
       },

@@ -43,8 +43,8 @@ async function run() {
   let failCount = 0
 
   const pushPromises = subscriptions.map(async (sub: any) => {
-    const payloadTitle = '🎉 Push Notifications Active!'
-    const payloadMessage = 'Enjoy seamless reminders for your meetings and follow-ups. We have perfectly optimized them for you!'
+    const payloadTitle = 'Good Afternoon'
+    const payloadMessage = 'Time to get to work and sell some properties.'
     const url = '/dashboard'
 
     try {
