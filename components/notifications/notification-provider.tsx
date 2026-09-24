@@ -171,7 +171,18 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
         
         if (!registration) return
 
-        const subscription = await registration.pushManager.getSubscription()
+        let subscription = await registration.pushManager.getSubscription()
+        
+        // Auto-subscribe if permission granted but token lost (common on Android Chrome)
+        if (!subscription && window.Notification?.permission === 'granted') {
+          const VAPID_KEY = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY
+          if (VAPID_KEY) {
+            subscription = await registration.pushManager.subscribe({
+              userVisibleOnly: true,
+              applicationServerKey: VAPID_KEY
+            }).catch(() => null)
+          }
+        }
         
         if (subscription) {
           const res = await fetch('/api/notifications/subscribe', {
@@ -183,7 +194,11 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
           if (res?.ok) {
             setIsSubscribed(true)
             lastSyncRef.current = profile.id
+          } else {
+            setIsSubscribed(false)
           }
+        } else {
+           setIsSubscribed(false)
         }
       } catch (err) {
         // Silently fail for background sync to avoid console noise
