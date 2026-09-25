@@ -55,21 +55,25 @@ export async function createClient(formData: ClientFormValues) {
     })
   }
 
+  // Record activity (calculate assignee name correctly first)
+  let assignedToName = profile.full_name
+  if (isAssignedToOther) {
+    const { data: assignee } = await supabase.from('profiles').select('full_name').eq('id', formData.assigned_to!).single()
+    if (assignee?.full_name) {
+      assignedToName = assignee.full_name
+    }
+  }
+
   // Notify Admins about the assignment
   await notifyAgencyAdmins(profile.agency_id as string, {
     type: 'new_client',
     title: '🤝 Lead Assigned',
-    message: `${client.full_name} has been assigned to ${isAssignedToOther ? 'an agent' : 'you'} by ${profile.full_name}`,
+    message: `${client.full_name} has been assigned to ${assignedToName} by ${profile.full_name}`,
     referenceId: client.id,
     referenceType: 'client'
   }, profile.id)
 
-  // Record activity
-  let assignedToName = 'you'
-  if (isAssignedToOther) {
-    const { data: assignee } = await supabase.from('profiles').select('full_name').eq('id', formData.assigned_to!).single()
-    assignedToName = assignee?.full_name || 'an agent'
-  }
+
 
   await supabase
     .from('activities')

@@ -75,22 +75,6 @@ export async function GET(req: NextRequest) {
       const agentName = (client as any).assignee?.full_name || (client as any).creator?.full_name || 'Team'
       if (!agentId) continue
 
-      // Stable titles for dedup (these NEVER change)
-      const title = tag === 'reminder' ? '🕐 Meeting Reminder' : '📍 Meeting Now'
-      const sixHoursAgo = new Date(now.getTime() - 6 * 60 * 60 * 1000).toISOString()
-
-      // DEDUP: Check if this exact title was already sent for this client
-      const { data: alreadySent } = await supabaseAdmin
-        .from('notifications')
-        .select('id')
-        .eq('user_id', agentId)
-        .eq('reference_id', client.id)
-        .eq('title', title)
-        .gte('created_at', sixHoursAgo)
-        .limit(1)
-
-      if (alreadySent && alreadySent.length > 0) continue
-
       // --- Messages ---
       const agentMessage = tag === 'reminder'
         ? `You have a meeting with ${client.full_name} in 1 hour at ${timeStr}.`
@@ -99,6 +83,22 @@ export async function GET(req: NextRequest) {
       const adminMessage = tag === 'reminder'
         ? `${agentName} has a meeting with ${client.full_name} in 1 hour at ${timeStr}.`
         : `${agentName}'s meeting with ${client.full_name} is starting now (${timeStr}).`
+
+      // Stable titles
+      const title = tag === 'reminder' ? '🕐 Meeting Reminder' : '📍 Meeting Now'
+      const sixHoursAgo = new Date(now.getTime() - 6 * 60 * 60 * 1000).toISOString()
+
+      // DEDUP: Check if this EXACT message (which includes the specific time) was already sent
+      const { data: alreadySent } = await supabaseAdmin
+        .from('notifications')
+        .select('id')
+        .eq('user_id', agentId)
+        .eq('reference_id', client.id)
+        .eq('message', agentMessage) // Compare exact message string!
+        .gte('created_at', sixHoursAgo)
+        .limit(1)
+
+      if (alreadySent && alreadySent.length > 0) continue
 
       // Send to Agent (type: 'system' — valid DB enum)
       await sendUserNotification(agentId, client.agency_id, {
